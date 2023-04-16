@@ -1,7 +1,12 @@
 # Discord-DLL-Hijacking
 This is a simple quick example of DLL hijacking enabling proxy execution for the Discord Binary. This can be beneficial for attackers requiring proxy execution to bypass EDR
 
+## Note
+I submitted this vuln to discord via their hackerone program. They choose to not recognize DLL hijacking unless it's related to the discord installer binary. 
+Similarly to chrome: https://chromium.googlesource.com/chromium/src/+/master/docs/security/faq.md#why-arent-physically_local-attacks-in-chromes-threat-model
 
+I understand this too an extent, but they don't seem to make any attempt to verify these DLL's or load them using best practices as directed by Microsoft: 
+https://support.microsoft.com/en-us/topic/secure-loading-of-libraries-to-prevent-dll-preloading-attacks-d41303ec-0748-9211-f317-2edc819682e1
 
 </br>
 
@@ -41,7 +46,7 @@ https://github.com/Flangvik/SharpDllProxy
 
 <br> 
 This will output two files, .c & an DLL 'tmpXYZ.dll'. Simply create a new DLL project in visual studio and replace the source with the output from DLLProxy. 
-Once you've compiled it, copy your DLL, the tmpXYZ.dll and your shellcode.bin into "C:\Users\<user>\AppData\Local\Discord\app-1.0.9012\". 
+Once you've compiled it, copy your DLL, the tmpXYZ.dll (rename it to ffmpeg.dll) and your shellcode.bin into "C:\Users\<user>\AppData\Local\Discord\app-1.0.9012\". 
 
 ## Result 
 ![popped](https://user-images.githubusercontent.com/46195001/232325180-3ec3af99-d5f9-4c8c-935c-fd7d3c0ece51.png)
