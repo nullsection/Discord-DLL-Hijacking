@@ -22,6 +22,38 @@ Discord in some instances requires Administrator privs when Push-To-Talk is over
 
 ## Analyzing with Procmon 
 
-Doing a basic filter results in ALOT of misconfigurations for search based DLL issues. What interested me was the 'ffmpeg.dll' I noticed elsehwhere in the procmon dump. This appears to be a common DLL used by a variety of applications. 
+Doing a basic filter results in ALOT of misconfigurations for search based DLL issues. What interested me was the 'ffmpeg.dll' I noticed elsehwhere in the procmon dump. This appears to be a common DLL used by a variety of applications including whatsapp. 
 
 ![image](https://user-images.githubusercontent.com/46195001/231240214-d6421d61-a458-4104-8591-03f38f26d2d4.png)
+
+</br> 
+
+
+## Generate a payload 
+Generate some shellcode to your liking. My POC: msfvenom -f raw -o pop.bin -p windows/exec cmd="cmd.exe /k whoami" exitfunc=thread --bad-chars '\x00\x20\' --smallest
+
+## Generating a malicious DLL 
+
+Using this great repository we can create our own DLL utilizing pragma comments to replicate functions: 
+https://github.com/Flangvik/SharpDllProxy 
+
+![dllproxy](https://user-images.githubusercontent.com/46195001/232322708-9f158799-c850-4a69-b69b-ad7372cbec1b.png)
+
+<br> 
+This will output two files, .c & an DLL 'tmpXYZ.dll'. Simply create a new DLL project in visual studio and replace the source with the output from DLLProxy. 
+Once you've compiled it, copy your DLL, the tmpXYZ.dll and your shellcode.bin into "C:\Users\<user>\AppData\Local\Discord\app-1.0.9012\". 
+
+## Result 
+![popped](https://user-images.githubusercontent.com/46195001/232325180-3ec3af99-d5f9-4c8c-935c-fd7d3c0ece51.png)
+
+Running Discord.exe executes a shellode. Great! Interestingly Discord itself crashes out with no visual artifacts but our cmd.exe process remains. This is ideal if we drop discord ourselves as a persistence mechanism without user knowledge. 
+
+## Weaponizing further. 
+
+-> TODO macro download and install discord via cmd.exe with no prompts, replace with malicious DLL and easylife. 
+
+ 
+
+
+
+
