@@ -1,4 +1,4 @@
-# Discord-DLL-Hijacking
+# Discord DLL hijacking / Automation via Excel Macros. 
 This is a simple quick example of DLL hijacking enabling proxy execution for the Discord Binary. This can be beneficial for attackers requiring proxy execution to bypass EDR
 
 ## Note
