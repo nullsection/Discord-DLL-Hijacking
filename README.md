@@ -8,6 +8,10 @@ Similarly to chrome: https://chromium.googlesource.com/chromium/src/+/master/doc
 I understand this too an extent, but they don't seem to make any attempt to verify these DLL's or load them using best practices as directed by Microsoft: 
 https://support.microsoft.com/en-us/topic/secure-loading-of-libraries-to-prevent-dll-preloading-attacks-d41303ec-0748-9211-f317-2edc819682e1
 
+This is an upstream vulnerability introduced by their dependencies of Node. 
+
+
+
 </br>
 
 ## What is DLL hijacking and why is it useful? 
