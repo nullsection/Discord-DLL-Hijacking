@@ -50,7 +50,7 @@ https://github.com/Flangvik/SharpDllProxy
 
 <br> 
 This will output two files, .c & an DLL 'tmpXYZ.dll'. Simply create a new DLL project in visual studio and replace the source with the output from DLLProxy. 
-Once you've compiled it, copy your DLL, the tmpXYZ.dll (rename it to ffmpeg.dll) and your shellcode.bin into "C:\Users\<user>\AppData\Local\Discord\app-1.0.9012\". 
+Once you've compiled it, copy your compiled DLL (name it ffmpegdll), the tmpXYZ.dll (loades your shellcode) and your shellcode.bin into "C:\Users\<user>\AppData\Local\Discord\app-1.0.9012\". 
 
 ## Result 
 ![popped](https://user-images.githubusercontent.com/46195001/232325180-3ec3af99-d5f9-4c8c-935c-fd7d3c0ece51.png)
